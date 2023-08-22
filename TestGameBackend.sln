@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinimalGameAPI", "MinimalGameAPI\MinimalGameAPI.csproj", "{A6FEBA5B-7123-4362-9C84-FB83F181AD56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalGameDataLibrary", "MinimalGameDataLibrary\MinimalGameDataLibrary.csproj", "{44F41D96-854F-4216-9EC1-82D82B887A4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6FEBA5B-7123-4362-9C84-FB83F181AD56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6FEBA5B-7123-4362-9C84-FB83F181AD56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6FEBA5B-7123-4362-9C84-FB83F181AD56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6FEBA5B-7123-4362-9C84-FB83F181AD56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44F41D96-854F-4216-9EC1-82D82B887A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F41D96-854F-4216-9EC1-82D82B887A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F41D96-854F-4216-9EC1-82D82B887A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F41D96-854F-4216-9EC1-82D82B887A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECFE3DDA-7279-4F08-AC3B-110664897988}
+	EndGlobalSection
+EndGlobal
