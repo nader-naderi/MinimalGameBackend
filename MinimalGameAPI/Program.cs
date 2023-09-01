@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-using MinimalGameAPI.Data;
-using MinimalGameAPI.Repositories;
-using MinimalGameAPI.Services;
+using DataAccessLayer.Data;
+using DataAccessLayer.Repositories;
+using ServiceLayer.Services;
 
 using Swashbuckle.AspNetCore.Filters;
 
@@ -15,11 +15,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var config = builder.Configuration;
+var sqlConnection = config.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<PlayerDbContext>(options => options.UseSqlServer(sqlConnection, 
+    x => x.MigrationsAssembly("DataAccessLayer.Data")));
+
+builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(sqlConnection, 
+    x => x.MigrationsAssembly("DataAccessLayer.Data")));
 
 // User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>(); 
 
 // Player
 builder.Services.AddScoped<IPlayerService, PlayerService>();
@@ -29,9 +36,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()

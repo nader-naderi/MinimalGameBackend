@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MinimalGameAPI.Services;
-using MinimalGameDataLibrary.Registeration;
+using ServiceLayer.Services;
+using DataTransferObjects.DataTransferObjects;
 
-namespace MinimalGameAPI.Controllers
+namespace DataAccessLayer.Controllers
 {
     [Route("/api/auth")]
     [ApiController]

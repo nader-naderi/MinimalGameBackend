@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-using MinimalGameAPI.Services;
-
-using MinimalGameDataLibrary;
+﻿using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Services;
 using MinimalGameDataLibrary.DataTransferObjects;
+using DataTransferObjects.DataTransferObjects;
 
-namespace MinimalGameAPI.Controllers
+namespace DataAccessLayer.Controllers
 {
     [Route("api/players")]
     [ApiController]
-    [Authorize(Roles = "Admin, User")]
+    //[Authorize(Roles = "Admin, User")]
     public class PlayerController : Controller
     {
         private readonly IPlayerService _playerService;
@@ -22,28 +18,58 @@ namespace MinimalGameAPI.Controllers
         [HttpPost("PostPlayer")]
         public async Task<IActionResult> PostPlayer([FromBody] PlayerInputDto playerInput)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                
+                var creationResponse = await _playerService.CreatePlayer(playerInput);
 
-            var playerOutput = await _playerService.CreatePlayer(playerInput);
-
-            if (playerOutput == null)
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the player.");
-
-            return StatusCode(201);
+                if (creationResponse.Success)
+                    return Ok(creationResponse);
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, creationResponse);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred: " + ex.Message);
+            }
         }
         #endregion
+
 
         #region Read
         [HttpGet("GetPlayers")]
         public async Task<ActionResult<IEnumerable<PlayerOutputDto>>> GetPlayers()
         {
-            var players = await _playerService.GetPlayers();
-            return Ok(players);
+            try
+            {
+                var players = await _playerService.GetPlayers();
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred: " + ex.Message);
+            }
         }
 
         [HttpGet("GetPlayer/{id}")]
         public async Task<ActionResult<PlayerOutputDto>> GetPlayer(int id)
+        {
+            try
+            {
+                var player = await _playerService.GetPlayer(id);
+                return player == null ? NotFound("No Player by this id was found.") : Ok(player);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred: " + ex.Message);
+            }
+        }
+
+        // FIXME: Get user from db and then navigate to player.
+        [HttpGet("GetPlayerFromUser/{id}")]
+        public async Task<ActionResult<PlayerOutputDto>> GetPlayerFromUser(int id)
         {
             var player = await _playerService.GetPlayer(id);
             return player == null ? NotFound("No Player by this id was found.") : Ok(player);
@@ -81,20 +107,28 @@ namespace MinimalGameAPI.Controllers
         {
             var result = await _playerService.DeleteAllPlayers();
 
-            if (!result)
-                return NotFound("No players found to delete.");
+            if (!result.Success)
+                return NotFound(result);
 
-            return Ok("All players deleted.");
+            return Ok(result);
         }
         [HttpDelete("Delete/id")]
         public async Task<ActionResult<PlayerOutputDto>> DeleteAPlayer(int id)
         {
-            var result = await _playerService.DeletePlayer(id);
+            try
+            {
+                var result = await _playerService.DeletePlayer(id);
 
-            if (!result)
-                return NotFound("No player found to delete.");
+                if (!result.Success)
+                    return NotFound(result);
 
-            return Ok("the player with ID: " + id + " has been deleted.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleing the player with id: " + id +
+                    ", " + ex.Message);
+            }
         }
         #endregion
     }
