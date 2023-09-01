@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Factory
 {
-    public class PlayerDbContextFactory : DbContextFactory<PlayerDbContext>
+    public class UserDbContextFactory : DbContextFactory<UserDbContext>
     {
     }
 }

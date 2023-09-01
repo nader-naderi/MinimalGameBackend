@@ -30,13 +30,20 @@ namespace DataAccessLayer.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath("C:/MyWorks/Backend/DotNetCore/DataStorageGameBackendTestAPI/TestGameBackend/MinimalGameAPI/")
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            if (!optionsBuilder.IsConfigured)
+            {
+                var directory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent; // Go up two levels to reach the sibling project directory
+                var appSettingsPath = Path.Combine(directory.FullName, "MinimalGameAPI", "appsettings.json"); // Construct the full path to appsettings.json
 
-            var dbConInfo = builder.Build().GetSection("ConnectionString").GetSection("DefaultConnection").Value;
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(directory.FullName) // Use the directory containing appsettings.json
+                    .AddJsonFile("appsettings.json") // Load appsettings.json
+                    .Build();
 
-            optionsBuilder.UseSqlServer(dbConInfo);
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
     }
 }

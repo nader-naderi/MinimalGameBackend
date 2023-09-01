@@ -66,6 +66,5 @@ namespace DataAccessLayer.Data
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }
-
     }
 }
