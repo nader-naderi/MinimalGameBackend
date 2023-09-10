@@ -6,8 +6,11 @@ namespace DataAccessLayer.Repositories
 {
     public class PlayerRepository : IPlayerRepository
     {
-        private readonly PlayerDbContext _dbContext;
+        private PlayerDbContext _dbContext;
         public PlayerRepository(PlayerDbContext dbContext) => _dbContext = dbContext;
+        public PlayerRepository() { }
+        public void SetupDbContext(PlayerDbContext dbContext) => _dbContext = dbContext;
+
         public async Task AddAsync(PlayerData entity) => await _dbContext.AddPlayer(entity);
         public async Task DeleteAsync(PlayerData entity) => await _dbContext.RemovePlayer(entity);
         public async Task UpdateAsync(PlayerData entity) => await _dbContext.UpdatePlayer(entity);

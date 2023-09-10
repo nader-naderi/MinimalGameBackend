@@ -6,6 +6,16 @@ using MinimalGameDataLibrary.OperationResults;
 
 namespace ServiceLayer.Services
 {
+    public interface IService<T>
+    {
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T?> GetById(int id);
+        Task<T> AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
+        Task DeleteAllAsync();
+    }
+
     public interface IPlayerService
     {
         Task<PlayerCreationResponse> CreatePlayer(PlayerInputDto playerInput);
@@ -20,10 +30,12 @@ namespace ServiceLayer.Services
 
     public class PlayerService : IPlayerService
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IPlayerRepository repository;
+        public PlayerService(IPlayerRepository playerRepository)
+        {
+            repository = playerRepository ?? throw new ArgumentNullException(nameof(repository));
+        }
 
-        public PlayerService(IPlayerRepository playerRepository) => _playerRepository = playerRepository;
-        
         public async Task<PlayerCreationResponse> CreatePlayer(PlayerInputDto playerInput)
         {
             try
@@ -38,7 +50,7 @@ namespace ServiceLayer.Services
                     DateSubmitted = DateTime.UtcNow
                 };
 
-                await _playerRepository.AddAsync(PlayerData);
+                await repository.AddAsync(PlayerData);
 
                 return new PlayerCreationResponse
                 {
@@ -65,7 +77,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var playerData = await _playerRepository.GetById(id);
+                var playerData = await repository.GetById(id);
 
                 if (playerData == null)
                 {
@@ -101,7 +113,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var players = await _playerRepository.GetAllAsync();
+                var players = await repository.GetAllAsync();
                 var playerOutputDto = players.Select(MapPlayerDataToPlayerOutputDto);
 
                 return new PlayerListResponse
@@ -141,7 +153,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var players = await _playerRepository.GetTopScorePlayersAsync(count);
+                var players = await repository.GetTopScorePlayersAsync(count);
                 var playerOutputDtos = players.Select(MapPlayerDataToPlayerOutputDto).ToList();
                 return new PlayerListResponse
                 {
@@ -165,7 +177,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var players = await _playerRepository.GetTopLevelPlayersAsync(count);
+                var players = await repository.GetTopLevelPlayersAsync(count);
 
                 var playerOutputDtos = players.Select(MapPlayerDataToPlayerOutputDto).ToList();
 
@@ -192,7 +204,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var existingPlayer = await _playerRepository.GetById(playerId) ?? throw new Exception("Player not found");
+                var existingPlayer = await repository.GetById(playerId) ?? throw new Exception("Player not found");
 
                 if (existingPlayer == null)
                 {
@@ -210,7 +222,7 @@ namespace ServiceLayer.Services
                 existingPlayer.PlayerPosition = playerInput.PlayerPosition;
                 existingPlayer.CoinPosition = playerInput.CoinPosition;
 
-                await _playerRepository.UpdateAsync(existingPlayer);
+                await repository.UpdateAsync(existingPlayer);
 
                 return new PlayerGetResponse
                 {
@@ -235,7 +247,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                await _playerRepository.DeleteAllAsync();
+                await repository.DeleteAllAsync();
                 return new PlayerOperationResult
                 {
                     Success = true,
@@ -257,7 +269,7 @@ namespace ServiceLayer.Services
         {
             try
             {
-                var player = await _playerRepository.GetById(id);
+                var player = await repository.GetById(id);
                 if (player == null)
                     return new PlayerOperationResult
                     {
@@ -266,7 +278,7 @@ namespace ServiceLayer.Services
                         ErrorCode = "NotFound.",
                     };
 
-                await _playerRepository.DeleteAsync(player);
+                await repository.DeleteAsync(player);
                 return new PlayerOperationResult
                 {
                     Success = true,

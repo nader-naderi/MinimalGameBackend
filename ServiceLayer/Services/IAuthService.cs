@@ -10,15 +10,27 @@ namespace ServiceLayer.Services
     {
         Task<RegisterationResponse> RegisterUserAsync(UserDto request);
         Task<LoginResponse> LoginUserAsync(UserDto request);
+        public void SetDependencies(IUserRepository userRepository, ITokenService tokenService);
     }
 
     public class AuthService : IAuthService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly ITokenService _tokenService;
-        private readonly IPlayerService? _playerService;
+        private IUserRepository _userRepository;
+        private ITokenService _tokenService;
+        private IPlayerService? _playerService;
 
         public AuthService(IUserRepository userRepository, ITokenService tokenService)
+        {
+            _userRepository = userRepository;
+            _tokenService = tokenService;
+        }
+
+        public AuthService()
+        {
+            
+        }
+
+        public void SetDependencies(IUserRepository userRepository, ITokenService tokenService)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;

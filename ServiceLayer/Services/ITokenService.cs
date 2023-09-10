@@ -12,13 +12,21 @@ namespace ServiceLayer.Services
     public interface ITokenService
     {
         string CreateToken(UserData user, List<string> roles);
+        public void Setup(IConfiguration configuration);
     }
 
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration _configuration;
 
         public TokenService(IConfiguration configuration) => _configuration = configuration;
+        public TokenService()
+        {
+            
+        }
+
+        public void Setup(IConfiguration configuration) => _configuration = configuration;
+
 
         public string CreateToken(UserData user, List<string> roles)
         {

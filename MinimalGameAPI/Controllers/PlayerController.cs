@@ -2,6 +2,7 @@
 using ServiceLayer.Services;
 using MinimalGameDataLibrary.DataTransferObjects;
 using DataTransferObjects.DataTransferObjects;
+using MinimalGameDataLibrary.OperationResults;
 
 namespace DataAccessLayer.Controllers
 {
@@ -113,7 +114,7 @@ namespace DataAccessLayer.Controllers
             return Ok(result);
         }
         [HttpDelete("Delete/id")]
-        public async Task<ActionResult<PlayerOutputDto>> DeleteAPlayer(int id)
+        public async Task<ActionResult<PlayerOperationResult>> DeleteAPlayer(int id)
         {
             try
             {
@@ -122,14 +123,29 @@ namespace DataAccessLayer.Controllers
                 if (!result.Success)
                     return NotFound(result);
 
-                return Ok(result);
+                var response = new PlayerOperationResult
+                {
+                    Success = true,
+                    Message = "Player deleted successfully.",
+                    PlayerId = id
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleing the player with id: " + id +
-                    ", " + ex.Message);
+                var response = new PlayerOperationResult
+                {
+                    Success = false,
+                    Message = "An error occurred while deleting the player with id: " + id +
+                        ", " + ex.Message,
+                    ErrorCode = "DeleteError",
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, response.Message);
             }
         }
+
         #endregion
     }
 }
