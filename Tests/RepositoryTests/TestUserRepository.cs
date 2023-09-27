@@ -1,6 +1,6 @@
 ﻿namespace Tests.RepositoryTests
 {
-    internal class UserRepositoryTest
+    internal class TestUserRepository
     {
 
     }

@@ -17,14 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 var sqlConnection = config.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<PlayerDbContext>(options => options.UseSqlServer(sqlConnection, 
-    x => x.MigrationsAssembly("DataAccessLayer.Data")));
-
-builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(sqlConnection, 
+builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(sqlConnection,
     x => x.MigrationsAssembly("DataAccessLayer.Data")));
 
 // User
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>(); 
 

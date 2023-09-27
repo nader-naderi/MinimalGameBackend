@@ -2,6 +2,7 @@
 using DataAccessLayer.Data;
 
 using MinimalGameDataLibrary;
+using MinimalGameDataLibrary.OperationResults;
 
 namespace DataAccessLayer.Repositories
 {
@@ -9,6 +10,7 @@ namespace DataAccessLayer.Repositories
     {
         Task<UserData?> GetUserAByUsernameAsync(string username);
         Task AddUserAsync(UserData user);
-        public void SetupDbContext(UserDbContext dbContext);
+        public void SetupDbContext(GameDbContext dbContext);
+        Task<IEnumerable<UserData>> GetUsers();
     }
 }

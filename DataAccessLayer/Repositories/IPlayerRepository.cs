@@ -8,6 +8,6 @@ namespace DataAccessLayer.Repositories
     {
         Task<IEnumerable<PlayerData>> GetTopScorePlayersAsync(int count);
         Task<IEnumerable<PlayerData>> GetTopLevelPlayersAsync(int count);
-        public void SetupDbContext(PlayerDbContext dbContext);
+        public void SetupDbContext(GameDbContext dbContext);
     }
 }

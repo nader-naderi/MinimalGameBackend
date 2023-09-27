@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinimalGameDataLibrary\MinimalGameDataLibrary.csproj" />
+    <ProjectReference Include="..\OperationResults\OperationResults.csproj" />
   </ItemGroup>
 
 </Project>

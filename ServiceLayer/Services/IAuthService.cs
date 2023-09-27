@@ -2,14 +2,15 @@
 using MinimalGameDataLibrary.OperationResults;
 using DataAccessLayer.Repositories;
 using BCrypt.Net;
-using DataTransferObjects.DataTransferObjects;
+using DataTransferObjects.DataTransferObjects.UserDTOs;
 
 namespace ServiceLayer.Services
 {
+
     public interface IAuthService
     {
-        Task<RegisterationResponse> RegisterUserAsync(UserDto request);
-        Task<LoginResponse> LoginUserAsync(UserDto request);
+        Task<RegisterationResponse> RegisterUserAsync(UserRegisterationDto request);
+        Task<LoginResponse> LoginUserAsync(UserLoginDto request);
         public void SetDependencies(IUserRepository userRepository, ITokenService tokenService);
     }
 
@@ -36,7 +37,7 @@ namespace ServiceLayer.Services
             _tokenService = tokenService;
         }
 
-        public async Task<RegisterationResponse> RegisterUserAsync(UserDto request)
+        public async Task<RegisterationResponse> RegisterUserAsync(UserRegisterationDto request)
         {
             try
             {
@@ -47,6 +48,7 @@ namespace ServiceLayer.Services
                     {
                         Success = false,
                         Message = "Username already exists. Please choose a different username.",
+                        Id = existingUser.Id,
                     };
 
                     return existingUserResponse;
@@ -82,14 +84,15 @@ namespace ServiceLayer.Services
                 {
                     Success = false,
                     Message = "User registeration failed.",
-                    ErrorCode = ex.Message
+                    ErrorCode = ex.Message,
+                    InternalErrorException = ex.InnerException.Message,
                 };
 
                 return failedRegisterationResponse;
             }
         }
 
-        public async Task<LoginResponse> LoginUserAsync(UserDto request)
+        public async Task<LoginResponse> LoginUserAsync(UserLoginDto request)
         {
             try
             {
@@ -118,13 +121,15 @@ namespace ServiceLayer.Services
                     return wrongPasswordResponse;
                 }
 
-                if (request.UserRole == string.Empty || request.UserRole == "string" || request.UserRole != "User" || request.UserRole != "Admin")
-                    request.UserRole = "User";
+                string userRole = user.Role;
+
+                if (userRole == string.Empty || userRole == "string" || userRole != "User" || userRole != "Admin")
+                    userRole = "User";
 
                 //if (user.PlayerData == null)
                 //    await CreateNewPlayer(request);
 
-                string token = _tokenService.CreateToken(user, new() { request.UserRole });
+                string token = _tokenService.CreateToken(user, new() { userRole });
 
                 LoginResponse succeesResponse = new()
                 {

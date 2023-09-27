@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services;
-using DataTransferObjects.DataTransferObjects;
+using DataTransferObjects.DataTransferObjects.UserDTOs;
 
 namespace DataAccessLayer.Controllers
 {
+
     [Route("/api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -16,7 +17,7 @@ namespace DataAccessLayer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserDto request)
+        public async Task<IActionResult> Register(UserRegisterationDto request)
         {
             var registrationResponse = await _authService.RegisterUserAsync(request);
 
@@ -27,7 +28,7 @@ namespace DataAccessLayer.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserDto request)
+        public async Task<IActionResult> Login(UserLoginDto request)
         {
             var loginResponse = await _authService.LoginUserAsync(request);
 

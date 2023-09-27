@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NUnit.Framework;
 using ServiceLayer.Services;
 using DataAccessLayer.Controllers;
-using DataTransferObjects.DataTransferObjects;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MinimalGameDataLibrary.OperationResults;
-using MinimalGameDataLibrary.DataTransferObjects;
+using DataTransferObjects.DataTransferObjects.PlayerDTOs;
 
-namespace YourUnitTestNamespace
+namespace MinimalGameAPI.UnitTests.ControllerTests
 {
     [TestFixture]
     public class TestPlayerController

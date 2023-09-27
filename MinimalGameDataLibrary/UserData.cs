@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinimalGameDataLibrary
@@ -14,10 +12,6 @@ namespace MinimalGameDataLibrary
         public string PasswordHash { get; set; }
         public string Role { get; set; }
 
-        // Player Navigation
-        [ForeignKey(nameof(Player))]
-        public int PlayerId { get; set; }
-        [ForeignKey("PlayerId")]
         public PlayerData Player { get; set; }
     }
 }

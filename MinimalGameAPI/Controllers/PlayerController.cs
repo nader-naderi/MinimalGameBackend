@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services;
-using MinimalGameDataLibrary.DataTransferObjects;
-using DataTransferObjects.DataTransferObjects;
 using MinimalGameDataLibrary.OperationResults;
+using Microsoft.AspNetCore.Authorization;
+using DataTransferObjects.DataTransferObjects.PlayerDTOs;
 
 namespace DataAccessLayer.Controllers
 {
     [Route("api/players")]
     [ApiController]
-    //[Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = "Admin, User")]
     public class PlayerController : Controller
     {
         private readonly IPlayerService _playerService;
@@ -100,7 +100,7 @@ namespace DataAccessLayer.Controllers
             }
         }
         #endregion
-
+        
         #region Delete
         // TODO: Remove it on publish.
         [HttpDelete("Delete")]

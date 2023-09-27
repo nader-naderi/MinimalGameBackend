@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj" />
-    <ProjectReference Include="..\MinimalGameDataLibrary\MinimalGameDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

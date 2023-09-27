@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\MinimalGameAPI\MinimalGameAPI.csproj" />
+    <ProjectReference Include="..\MinimalGameDataLibrary\MinimalGameDataLibrary.csproj" />
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
   </ItemGroup>
 

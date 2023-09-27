@@ -1,5 +1,8 @@
-﻿namespace DataTransferObjects.DataTransferObjects
+﻿using Newtonsoft.Json;
+
+namespace DataTransferObjects.DataTransferObjects.PlayerDTOs
 {
+    [JsonObject]
     public class PlayerOutputDto
     {
         public int Id { get; set; }

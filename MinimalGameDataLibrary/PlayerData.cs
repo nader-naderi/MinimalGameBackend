@@ -14,5 +14,9 @@ namespace MinimalGameDataLibrary
         public DateTime DateSubmitted { get; set; }
         public string PlayerPosition { get; set; }
         public string CoinPosition { get; set; }
+
+        [ForeignKey(nameof(UserData))]
+        public int UserId { get; set; }
+        public UserData User { get; set; }
     }
 }

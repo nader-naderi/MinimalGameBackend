@@ -1,4 +1,4 @@
-﻿using DataTransferObjects.DataTransferObjects;
+﻿using DataTransferObjects.DataTransferObjects.PlayerDTOs;
 using System.Collections.Generic;
 
 namespace MinimalGameDataLibrary.OperationResults

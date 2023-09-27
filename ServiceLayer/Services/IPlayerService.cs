@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Repositories;
-using DataTransferObjects.DataTransferObjects;
+using DataTransferObjects.DataTransferObjects.PlayerDTOs;
 using MinimalGameDataLibrary;
-using MinimalGameDataLibrary.DataTransferObjects;
 using MinimalGameDataLibrary.OperationResults;
 
 namespace ServiceLayer.Services
@@ -135,8 +134,11 @@ namespace ServiceLayer.Services
             }
         }
 
-        private static PlayerOutputDto MapPlayerDataToPlayerOutputDto(PlayerData playerData)
+        public static PlayerOutputDto? MapPlayerDataToPlayerOutputDto(PlayerData playerData)
         {
+            if (playerData == null)
+                return null;
+
             return new PlayerOutputDto
             {
                 Id = playerData.Id,
